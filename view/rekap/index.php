@@ -114,7 +114,7 @@ $rowa = $stmta->fetch();
         <?php
         $count = 1;
 
-        $sql = $conn->prepare("SELECT id_kec, m_kecamatan.nama AS nama_kec, data_rekap.j_kel AS jumlah_kelurahan, data_rekap.j_rw AS jumlah_rw, data_rekap.j_rt AS jumlah_rt, data_rekap.j_dasawisma AS jumlah_dasawisma, data_rekap.j_kk AS jumlah_kk FROM `data_rekap` INNER JOIN m_kecamatan ON data_rekap.id_kec = m_kecamatan.id GROUP BY id_kec ORDER BY m_kecamatan.id ASC");
+        $sql = $conn->prepare("SELECT data_rekap.id_kec,m_kecamatan.nama AS nama_kec,SUM(data_rekap.j_rw) AS jumlah_rw,SUM(data_rekap.j_rt) AS jumlah_rt,SUM(data_rekap.j_kk) AS jumlah_kk,id_kec_count.id_kec_count AS jumlah_kelurahan FROM data_rekap INNER JOIN m_kecamatan ON data_rekap.id_kec=m_kecamatan.id INNER JOIN (SELECT id_kec,COUNT(id_kel) AS id_kec_count FROM data_rekap GROUP BY id_kec) as id_kec_count ON m_kecamatan.id=id_kec_count.id_kec GROUP BY data_rekap.id_kec ORDER BY data_rekap.id_kec ASC;");
         $sql->execute();
         ?>
         <div class="card m-b-30 d-print-noborder">
@@ -148,7 +148,6 @@ $rowa = $stmta->fetch();
             <th>Kelurahan</th>
             <th>RW</th>
             <th>RT</th>
-            <th>Dasawisma</th>
             <th>KK</th>
             <th>#</th>
           </tr>
@@ -166,7 +165,6 @@ $rowa = $stmta->fetch();
             <td><?php echo $data['jumlah_kelurahan'];?></td>
             <td><?php echo $data['jumlah_rw'];?></td>
             <td><?php echo $data['jumlah_rt'];?></td>
-            <td><?php echo $data['jumlah_dasawisma'];?></td>
             <td><?php echo $data['jumlah_kk'];?></td>
             <td>
               <div class="btn btn-primary" onclick="redirectKeHalamanDetail(<?php echo $data['id_kec'];?>)"> <i class="fa-solid fa-book"></i> Rekap
