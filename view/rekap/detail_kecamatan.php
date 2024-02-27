@@ -155,7 +155,7 @@ if ($idKecamatan) {
             <td><?php echo $dataDetailKelurahan['jumlah_rw'];?></td>
             <td><?php echo $dataDetailKelurahan['jumlah_rt'];?></td>
             <td><?php echo $dataDetailKelurahan['jumlah_kk'];?></td>
-            <td><div class="btn btn-primary" onclick='window.location.href = "detail_kelurahan.php?id_kelurahan=<?php echo $dataDetailKelurahan['id_kel'];  ?>"'> <i class="fa-solid fa-book"></i> Rekap Kecamatan
+            <td><div class="btn btn-primary" onclick='window.location.href = "detail_kelurahan.php?id_kelurahan=<?php echo $dataDetailKelurahan['id_kel'];  ?>"'> <i class="fa-solid fa-book"></i> Rekap
                 </div></td>
         </tr>
     <?php $count++; } ?>

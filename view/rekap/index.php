@@ -169,7 +169,7 @@ $rowa = $stmta->fetch();
             <td><?php echo $data['jumlah_dasawisma'];?></td>
             <td><?php echo $data['jumlah_kk'];?></td>
             <td>
-              <div class="btn btn-primary" onclick="redirectKeHalamanDetail(<?php echo $data['id_kec'];?>)"> <i class="fa-solid fa-book"></i> Rekap Kecamatan
+              <div class="btn btn-primary" onclick="redirectKeHalamanDetail(<?php echo $data['id_kec'];?>)"> <i class="fa-solid fa-book"></i> Rekap
 </div>
             </td>
           </tr>
