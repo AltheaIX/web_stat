@@ -145,15 +145,18 @@ if ($idKecamatan) {
             <th>RW</th>
             <th>RT</th>
             <th>KK</th>
+            <th>#</th>
         </tr>
     </thead>
     <tbody>
     <?php while($dataDetailKelurahan = $sql->fetch()){ ?>
         <tr>
-            <td><a href="detail_kelurahan.php?id_kelurahan=<?php echo $dataDetailKelurahan['id_kel']; ?>"><?php echo $dataDetailKelurahan['nama_kel'] ?></a></td>
+            <td><?php echo $dataDetailKelurahan['nama_kel'] ?></td>
             <td><?php echo $dataDetailKelurahan['jumlah_rw'];?></td>
             <td><?php echo $dataDetailKelurahan['jumlah_rt'];?></td>
             <td><?php echo $dataDetailKelurahan['jumlah_kk'];?></td>
+            <td><div class="btn btn-primary" onclick='window.location.href = "detail_kelurahan.php?id_kelurahan=<?php echo $dataDetailKelurahan['id_kel'];  ?>"'> <i class="fa-solid fa-book"></i> Rekap Kecamatan
+                </div></td>
         </tr>
     <?php } ?>
     </tbody>
