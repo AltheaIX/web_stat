@@ -1,6 +1,6 @@
 <?php
 include '../../config.php';
-error_reporting(0);
+// error_reporting(0);
 
 $sqla = "SELECT * FROM setting ORDER BY id DESC";
 $stmta = $conn->prepare($sqla);
@@ -174,21 +174,11 @@ if ($idKelurahan) {
         <h4>Bar Chart</h4>
         <div class="container-fluid">
             <?php
-            include '../../config.php';
-            error_reporting(E_ALL);
-
-            $idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
-
             // Query untuk mengambil data dari database berdasarkan id kecamatan
-            $sql = "SELECT m_kelurahan.nama AS kelurahan, data_rekap.j_rw, data_rekap.j_rt, data_rekap.j_a_total_l, data_rekap.j_a_total_p 
-                    FROM data_rekap 
-                    INNER JOIN m_kecamatan ON data_rekap.id_kec = m_kecamatan.id 
-                    INNER JOIN m_kelurahan ON m_kecamatan.id = m_kelurahan.id_kec 
-                    WHERE data_rekap.id_kec = :id_kecamatan
-                    GROUP BY m_kelurahan.id";
+            $sql = "SELECT j_rw, j_rt, j_a_total_l, j_a_total_p FROM `data_rekap` WHERE id_kel = :id_kel";
 
             $stmt = $conn->prepare($sql);
-            $stmt->bindParam(':id_kecamatan', $idKecamatan, PDO::PARAM_INT);
+            $stmt->bindParam(':id_kel', $idKelurahan, PDO::PARAM_INT);
             $stmt->execute();
 
             // Mengonversi data dari database ke format yang dapat digunakan oleh Chart.js
@@ -276,25 +266,16 @@ if ($idKelurahan) {
                  
                 <div class="card-body">
                    <?php
-                        include '../../config.php';
-                        error_reporting(0);
-                        // Ambil ID kecamatan dari URL
-                        $idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
-                        
                         // Pastikan ID Kecamatan tidak kosong
-if ($idKecamatan) {
+if ($idKelurahan) {
     // Query SQL untuk data rekapitulasi
     $sql = $conn->prepare("SELECT
-    m_kecamatan.nama AS nama_kec,
     SUM(data_rekap.j_a_total_l) as total_laki,
     SUM(data_rekap.j_a_total_p) as total_perempuan,
     SUM(data_rekap.j_a_total_l + data_rekap.j_a_total_p) as total_warga
     FROM `data_rekap`
-    INNER JOIN m_kecamatan ON data_rekap.id_kec = m_kecamatan.id
-    WHERE data_rekap.id_kec = ?
-    GROUP BY data_rekap.id_kec
-    ORDER BY m_kecamatan.id ASC");
-    $sql->execute([$idKecamatan]);
+    WHERE data_rekap.id_kel = ?");
+    $sql->execute([$idKelurahan]);
 
     // Ambil data dari hasil kueri
     $dataDetailKecamatan = $sql->fetch();
@@ -320,18 +301,13 @@ if ($idKecamatan) {
                 
                   // Query SQL untuk data pie chart berdasarkan ID kecamatan
                   <?php
-include '../../config.php';
-error_reporting(0);
-
-// Ambil ID kecamatan dari URL
-$idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
     $sql_pie_chart = $conn->prepare("SELECT
        SUM(data_rekap.j_a_total_l) as total_laki,
        SUM(data_rekap.j_a_total_p) as total_perempuan,
        SUM(data_rekap.j_a_total_l + data_rekap.j_a_total_p) as total_warga
        FROM data_rekap
-       WHERE id_kec = ?");
-    $sql_pie_chart->execute([$idKecamatan]);
+       WHERE id_kel = ?");
+    $sql_pie_chart->execute([$idKelurahan]);
     $row_chart_data = $sql_pie_chart->fetch();
 
     // Buat array data untuk chart
@@ -396,13 +372,7 @@ $idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
             <div class="card">
                 <div class="card-body">
                     <?php
-                        include '../../config.php';
-                        error_reporting(0);
-                        // Ambil ID kecamatan dari URL
-                        $idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
-                        
-                        // Pastikan ID Kecamatan tidak kosong
-if ($idKecamatan) {
+if ($idKelurahan) {
     // Query SQL untuk data rekapitulasi
     $sql = $conn->prepare("SELECT
     m_kecamatan.nama AS nama_kec,
@@ -411,10 +381,10 @@ if ($idKecamatan) {
     SUM(data_rekap.j_a_balita_l + data_rekap.j_a_balita_p) as total_balita
     FROM `data_rekap`
     INNER JOIN m_kecamatan ON data_rekap.id_kec = m_kecamatan.id
-    WHERE data_rekap.id_kec = ?
+    WHERE data_rekap.id_kel = ?
     GROUP BY data_rekap.id_kec
     ORDER BY m_kecamatan.id ASC");
-    $sql->execute([$idKecamatan]);
+    $sql->execute([$idKelurahan]);
 
     // Ambil data dari hasil kueri
     $dataDetailKecamatan = $sql->fetch();
@@ -440,18 +410,13 @@ if ($idKecamatan) {
                 
                 // Query SQL untuk data pie chart berdasarkan ID kecamatan
                   <?php
-include '../../config.php';
-error_reporting(0);
-
-// Ambil ID kecamatan dari URL
-$idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
     $sql_pie_chart = $conn->prepare("SELECT
        SUM(data_rekap.j_a_balita_l) as balita_laki,
        SUM(data_rekap.j_a_balita_p) as balita_perempuan,
        SUM(data_rekap.j_a_balita_l + data_rekap.j_a_balita_p) as total_balita
        FROM data_rekap
-       WHERE id_kec = ?");
-    $sql_pie_chart->execute([$idKecamatan]);
+       WHERE id_kel = ?");
+    $sql_pie_chart->execute([$idKelurahan]);
     $row_chart_data = $sql_pie_chart->fetch();
 
     // Buat array data untuk chart
@@ -515,25 +480,15 @@ $idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
             <div class="card">
                 <div class="card-body">
                     <?php
-                        include '../../config.php';
-                        error_reporting(0);
-                        // Ambil ID kecamatan dari URL
-                        $idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
-                        
-                    // Pastikan ID Kecamatan tidak kosong
-                    if ($idKecamatan) {
+                    if ($idKelurahan) {
                         // Query SQL untuk data rekapitulasi
                         $sql = $conn->prepare("SELECT
-                        m_kecamatan.nama AS nama_kec,
                         SUM(j_a_blaki) as buta_laki,
                         SUM(j_a_bcwe) as buta_perempuan,
                         SUM(data_rekap.j_a_blaki + data_rekap.j_a_bcwe) as total_buta
                         FROM `data_rekap`
-                        INNER JOIN m_kecamatan ON data_rekap.id_kec = m_kecamatan.id
-                        WHERE data_rekap.id_kec = ?
-                        GROUP BY data_rekap.id_kec
-                        ORDER BY m_kecamatan.id ASC");
-                        $sql->execute([$idKecamatan]);
+                        WHERE data_rekap.id_kel = ?");
+                        $sql->execute([$idKelurahan]);
                     
                         // Ambil data dari hasil kueri
                         $dataDetailKecamatan = $sql->fetch();
@@ -558,20 +513,14 @@ $idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
 			<canvas id="menikahperempuan" class="chartjs-render-monitor mt-1" style="display: block; height: 210px; width: 100%;"></canvas>
                 <script>
 
-                // Query SQL untuk data pie chart berdasarkan ID kecamatan
                                   <?php
-                include '../../config.php';
-                error_reporting(0);
-                
-                // Ambil ID kecamatan dari URL
-                $idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
                     $sql_pie_chart = $conn->prepare("SELECT
                        SUM(data_rekap.j_a_blaki) as laki_buta,
                        SUM(data_rekap.j_a_bcwe) as perempuan_buta,
                        SUM(data_rekap.j_a_blaki + data_rekap.j_a_bcwe) as total_buta
                        FROM data_rekap
-                       WHERE id_kec = ?");
-                    $sql_pie_chart->execute([$idKecamatan]);
+                       WHERE id_kel = ?");
+                    $sql_pie_chart->execute([$idKelurahan]);
                     $row_chart_data = $sql_pie_chart->fetch();
                 
                     // Buat array data untuk chart
@@ -634,25 +583,16 @@ $idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
             <div class="card">
                 <div class="card-body">
                     <?php
-                        include '../../config.php';
-                        error_reporting(0);
-                        // Ambil ID kecamatan dari URL
-                        $idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
-                        
                     // Pastikan ID Kecamatan tidak kosong
-                    if ($idKecamatan) {
+                    if ($idKelurahan) {
                         // Query SQL untuk data rekapitulasi
                         $sql = $conn->prepare("SELECT
-                        m_kecamatan.nama AS nama_kec,
                        SUM(data_rekap.kr_sehat) as rumah_sehat,
                         SUM(data_rekap.kr_tdk_sehat) as rumah_tidak_sehat,
                         SUM(data_rekap.kr_sehat + data_rekap.kr_tdk_sehat) as total_rumah
                         FROM `data_rekap`
-                        INNER JOIN m_kecamatan ON data_rekap.id_kec = m_kecamatan.id
-                        WHERE data_rekap.id_kec = ?
-                        GROUP BY data_rekap.id_kec
-                        ORDER BY m_kecamatan.id ASC");
-                        $sql->execute([$idKecamatan]);
+                        WHERE data_rekap.id_kel = ?");
+                        $sql->execute([$idKelurahan]);
                     
                         // Ambil data dari hasil kueri
                         $dataDetailKecamatan = $sql->fetch();
@@ -687,8 +627,8 @@ $idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
                        SUM(data_rekap.kr_tdk_sehat) as rumah_tidak_sehat,
                        SUM(data_rekap.kr_sehat + data_rekap.kr_tdk_sehat) as total_rumah
                        FROM data_rekap
-                       WHERE id_kec = ?");
-                    $sql_pie_chart->execute([$idKecamatan]);
+                       WHERE id_kel = ?");
+                    $sql_pie_chart->execute([$idKelurahan]);
                     $row_chart_data = $sql_pie_chart->fetch();
                 
                     // Buat array data untuk chart
@@ -751,26 +691,17 @@ $idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
             <div class="card">
                 <div class="card-body">
                     <?php
-                        include '../../config.php';
-                        error_reporting(0);
-                        // Ambil ID kecamatan dari URL
-                        $idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
-                        
                     // Pastikan ID Kecamatan tidak kosong
-                    if ($idKecamatan) {
+                    if ($idKelurahan) {
                         // Query SQL untuk data rekapitulasi
                         $sql = $conn->prepare("SELECT
-                        m_kecamatan.nama AS nama_kec,
                        SUM(data_rekap.jr_tsampah) as tsampah,
                         SUM(data_rekap.jr_spal) as spal,
                         SUM(data_rekap.jr_jamban) as jamban,
                         SUM(data_rekap.jr_stiker) as stiker
                         FROM `data_rekap`
-                        INNER JOIN m_kecamatan ON data_rekap.id_kec = m_kecamatan.id
-                        WHERE data_rekap.id_kec = ?
-                        GROUP BY data_rekap.id_kec
-                        ORDER BY m_kecamatan.id ASC");
-                        $sql->execute([$idKecamatan]);
+                        WHERE data_rekap.id_kel = ?");
+                        $sql->execute([$idKelurahan]);
                     
                         // Ambil data dari hasil kueri
                         $dataDetailKecamatan = $sql->fetch();
@@ -809,8 +740,8 @@ $idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
                        SUM(data_rekap.jr_jamban) as jamban,
                        SUM(data_rekap.jr_stiker) as stiker
                        FROM data_rekap
-                       WHERE id_kec = ?");
-                    $sql_pie_chart->execute([$idKecamatan]);
+                       WHERE id_kel = ?");
+                    $sql_pie_chart->execute([$idKelurahan]);
                     $row_chart_data = $sql_pie_chart->fetch();
                 
                     // Buat array data untuk chart
@@ -876,30 +807,19 @@ $idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
             <div class="card">
                 <div class="card-body">
                     <?php
-                        include '../../config.php';
-                        error_reporting(0);
-                        // Ambil ID kecamatan dari URL
-                        $idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
-                        
-                    // Pastikan ID Kecamatan tidak kosong
-                    if ($idKecamatan) {
+                    if ($idKelurahan) {
                         // Query SQL untuk data rekapitulasi
                         $sql = $conn->prepare("SELECT
-                        m_kecamatan.nama AS nama_kec,
                        SUM(data_rekap.sak_pdam) as pdam,
                         SUM(data_rekap.sak_sumur) as sumur,
                         SUM(data_rekap.sak_sungai) as sungai,
                         SUM(data_rekap.sak_dll) as dll
                         FROM `data_rekap`
-                        INNER JOIN m_kecamatan ON data_rekap.id_kec = m_kecamatan.id
-                        WHERE data_rekap.id_kec = ?
-                        GROUP BY data_rekap.id_kec
-                        ORDER BY m_kecamatan.id ASC");
-                        $sql->execute([$idKecamatan]);
+                        WHERE data_rekap.id_kel = ?");
+                        $sql->execute([$idKelurahan]);
                     
                         // Ambil data dari hasil kueri
                         $dataDetailKecamatan = $sql->fetch();
-
                     ?>
                     <p class="card-title text-md-center text-xl-left">Sumber Air Keluarga</p>
                     <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
@@ -921,19 +841,14 @@ $idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
                 <script>
                  // Query SQL untuk data pie chart berdasarkan ID kecamatan
                 <?php
-                include '../../config.php';
-                error_reporting(0);
-                
-                // Ambil ID kecamatan dari URL
-                $idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
                     $sql_pie_chart = $conn->prepare("SELECT
                        SUM(data_rekap.sak_pdam) as pdam,
                        SUM(data_rekap.sak_sumur) as sumur,
                        SUM(data_rekap.sak_sungai) as sungai,
                        SUM(data_rekap.sak_dll) as dll
                        FROM data_rekap
-                       WHERE id_kec = ?");
-                    $sql_pie_chart->execute([$idKecamatan]);
+                       WHERE id_kel = ?");
+                    $sql_pie_chart->execute([$idKelurahan]);
                     $row_chart_data = $sql_pie_chart->fetch();
                 
                     // Buat array data untuk chart
@@ -1005,24 +920,14 @@ $idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
             <div class="card">
                 <div class="card-body">
                     <?php
-                        include '../../config.php';
-                        error_reporting(0);
-                        // Ambil ID kecamatan dari URL
-                        $idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
-                        
-                    // Pastikan ID Kecamatan tidak kosong
-                    if ($idKecamatan) {
+                    if ($idKelurahan) {
                         // Query SQL untuk data rekapitulasi
                         $sql = $conn->prepare("SELECT
-                        m_kecamatan.nama AS nama_kec,
                        SUM(data_rekap.mp_beras) as beras,
                         SUM(data_rekap.mp_nonberas) as nonberas
                         FROM `data_rekap`
-                        INNER JOIN m_kecamatan ON data_rekap.id_kec = m_kecamatan.id
-                        WHERE data_rekap.id_kec = ?
-                        GROUP BY data_rekap.id_kec
-                        ORDER BY m_kecamatan.id ASC");
-                        $sql->execute([$idKecamatan]);
+                        WHERE data_rekap.id_kel = ?");
+                        $sql->execute([$idKelurahan]);
                     
                         // Ambil data dari hasil kueri
                         $dataDetailKecamatan = $sql->fetch();
@@ -1055,8 +960,8 @@ $idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
                        SUM(data_rekap.mp_beras) as beras,
                        SUM(data_rekap.mp_nonberas) as nonberas
                        FROM data_rekap
-                       WHERE id_kec = ?");
-                    $sql_pie_chart->execute([$idKecamatan]);
+                       WHERE id_kel = ?");
+                    $sql_pie_chart->execute([$idKelurahan]);
                     $row_chart_data = $sql_pie_chart->fetch();
                 
                     // Buat array data untuk chart
@@ -1119,16 +1024,10 @@ $idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
             <div class="card">
                 <div class="card-body">
                     <?php
-                        include '../../config.php';
-                        error_reporting(0);
-                        // Ambil ID kecamatan dari URL
-                        $idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
-                        
                     // Pastikan ID Kecamatan tidak kosong
-                    if ($idKecamatan) {
+                    if ($idKelurahan) {
                         // Query SQL untuk data rekapitulasi
                         $sql = $conn->prepare("SELECT
-                        m_kecamatan.nama AS nama_kec,
                        SUM(data_rekap.kp_ternak) as peternakan,
                         SUM(data_rekap.kp_ikan) as perikanan,
                         SUM(data_rekap.kp_warung) as warung_hidup,
@@ -1136,11 +1035,8 @@ $idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
                         SUM(data_rekap.kp_toga) as toga,
                         SUM(data_rekap.kp_tanaman) as tanaman_keras
                         FROM `data_rekap`
-                        INNER JOIN m_kecamatan ON data_rekap.id_kec = m_kecamatan.id
-                        WHERE data_rekap.id_kec = ?
-                        GROUP BY data_rekap.id_kec
-                        ORDER BY m_kecamatan.id ASC");
-                        $sql->execute([$idKecamatan]);
+                        WHERE data_rekap.id_kel = ?");
+                        $sql->execute([$idKelurahan]);
                     
                         // Ambil data dari hasil kueri
                         $dataDetailKecamatan = $sql->fetch();
@@ -1168,11 +1064,6 @@ $idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
                 <script>
                  // Query SQL untuk data pie chart berdasarkan ID kecamatan
                 <?php
-                include '../../config.php';
-                error_reporting(0);
-                
-                // Ambil ID kecamatan dari URL
-                $idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
                     $sql_pie_chart = $conn->prepare("SELECT
                        SUM(data_rekap.kp_ternak) as peternakan,
                        SUM(data_rekap.kp_ikan) as perikanan,
@@ -1181,8 +1072,8 @@ $idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
                        SUM(data_rekap.kp_toga) as toga,
                        SUM(data_rekap.kp_tanaman) as tanaman_keras
                        FROM data_rekap
-                       WHERE id_kec = ?");
-                    $sql_pie_chart->execute([$idKecamatan]);
+                       WHERE id_kel = ?");
+                    $sql_pie_chart->execute([$idKelurahan]);
                     $row_chart_data = $sql_pie_chart->fetch();
                 
                     // Buat array data untuk chart
@@ -1253,26 +1144,18 @@ $idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
             <div class="card">
                 <div class="card-body">
                     <?php
-                        include '../../config.php';
-                        error_reporting(0);
-                        // Ambil ID kecamatan dari URL
-                        $idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
                         
                     // Pastikan ID Kecamatan tidak kosong
-                    if ($idKecamatan) {
+                    if ($idKelurahan) {
                         // Query SQL untuk data rekapitulasi
                         $sql = $conn->prepare("SELECT
-                        m_kecamatan.nama AS nama_kec,
                        SUM(data_rekap.j_a_hamil) as total_hamil,
                         SUM(data_rekap.j_a_susui) as total_susui,
                         SUM(data_rekap.j_a_susui + data_rekap.j_a_hamil + data_rekap.j_a_balita_p + data_rekap.j_a_balita_l) as total_balita_ibu,
                         SUM(data_rekap.j_a_balita_p + data_rekap.j_a_balita_l) as total_balita
                         FROM `data_rekap`
-                        INNER JOIN m_kecamatan ON data_rekap.id_kec = m_kecamatan.id
-                        WHERE data_rekap.id_kec = ?
-                        GROUP BY data_rekap.id_kec
-                        ORDER BY m_kecamatan.id ASC");
-                        $sql->execute([$idKecamatan]);
+                        WHERE data_rekap.id_kel = ?");
+                        $sql->execute([$idKelurahan]);
                     
                         // Ambil data dari hasil kueri
                         $dataDetailKecamatan = $sql->fetch();
@@ -1298,18 +1181,13 @@ $idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
                 <script>
                  // Query SQL untuk data pie chart berdasarkan ID kecamatan
                 <?php
-                include '../../config.php';
-                error_reporting(0);
-                
-                // Ambil ID kecamatan dari URL
-                $idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
                     $sql_pie_chart = $conn->prepare("SELECT
                        SUM(data_rekap.j_a_hamil) as total_hamil,
                        SUM(data_rekap.j_a_susui) as total_susui,
                        SUM(data_rekap.j_a_balita_p + data_rekap.j_a_balita_l) as total_balita
                        FROM data_rekap
-                       WHERE id_kec = ?");
-                    $sql_pie_chart->execute([$idKecamatan]);
+                       WHERE id_kel = ?");
+                    $sql_pie_chart->execute([$idKelurahan]);
                     $row_chart_data = $sql_pie_chart->fetch();
                 
                     // Buat array data untuk chart
@@ -1375,25 +1253,15 @@ $idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
                 <div class="card-body">
                     
                     <?php
-                        include '../../config.php';
-                        error_reporting(0);
-                        // Ambil ID kecamatan dari URL
-                        $idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
-                        
-                    // Pastikan ID Kecamatan tidak kosong
-                    if ($idKecamatan) {
+                    if ($idKelurahan) {
                         // Query SQL untuk data rekapitulasi
                         $sql = $conn->prepare("SELECT
-                        m_kecamatan.nama AS nama_kec,
                        SUM(data_rekap.i_pangan) as pangan,
                         SUM(data_rekap.i_sandang) as sandang,
                         SUM(data_rekap.i_jasa) as jasa
                         FROM `data_rekap`
-                        INNER JOIN m_kecamatan ON data_rekap.id_kec = m_kecamatan.id
-                        WHERE data_rekap.id_kec = ?
-                        GROUP BY data_rekap.id_kec
-                        ORDER BY m_kecamatan.id ASC");
-                        $sql->execute([$idKecamatan]);
+                        WHERE data_rekap.id_kel = ?");
+                        $sql->execute([$idKelurahan]);
                     
                         // Ambil data dari hasil kueri
                         $dataDetailKecamatan = $sql->fetch();
@@ -1418,19 +1286,14 @@ $idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
                 <script>
                   // Query SQL untuk data pie chart berdasarkan ID kecamatan
                 <?php
-                include '../../config.php';
-                error_reporting(0);
-                
-                // Ambil ID kecamatan dari URL
-                $idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
                     $sql_pie_chart = $conn->prepare("SELECT
                        SUM(data_rekap.i_pangan) as pangan,
                        SUM(data_rekap.i_sandang) as sandang,
                        SUM(data_rekap.i_jasa) as jasa
                        
                        FROM data_rekap
-                       WHERE id_kec = ?");
-                    $sql_pie_chart->execute([$idKecamatan]);
+                       WHERE id_kel = ?");
+                    $sql_pie_chart->execute([$idKelurahan]);
                     $row_chart_data = $sql_pie_chart->fetch();
                 
                     // Buat array data untuk chart
