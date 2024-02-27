@@ -7,6 +7,7 @@ $stmta = $conn->prepare($sqla);
 $stmta->execute();
 $rowa = $stmta->fetch();
 
+$idKelurahan = isset($_GET['id_kelurahan']) ? $_GET['id_kelurahan'] : null;
 ?>
 
 <!DOCTYPE html>
@@ -116,8 +117,13 @@ $rowa = $stmta->fetch();
                 </div>
 
                 <div class="col mb-3 mt-3">
+                    <?php
+                    $sql = $conn->prepare("SELECT nama FROM m_kelurahan WHERE id=:id_kel");
+                    $sql->execute([':id_kel' => $idKelurahan]);
+                    $data_kelurahan = $sql->fetch();
+                    ?>
                     <h4 class="font-weight-normal text-center">Hasil Pendataan Real Time</h4>
-                    <h4 class="font-weight-normal text-center mb-2">Kelompok Data <?php echo $rowa['nama']; ?></h4>
+                    <h4 class="font-weight-normal text-center mb-2"><?php echo $data_kelurahan['nama']; ?> <?php echo $rowa['nama']; ?></h4>
                 </div>
 
                 <div class="table-responsive">
@@ -129,7 +135,6 @@ $idKelurahan = isset($_GET['id_kelurahan']) ? $_GET['id_kelurahan'] : null;
 
 // Pastikan ID Kecamatan tidak kosong
 if ($idKelurahan) {
-    $count = 1;
     $sql = $conn->prepare("SELECT data_rekap.j_rw AS jumlah_rw, data_rekap.j_rt AS jumlah_rt, data_rekap.j_kk AS jumlah_kk FROM `data_rekap` WHERE data_rekap.id_kel = :id_kel ORDER BY data_rekap.id ASC");
     $sql->execute([":id_kel" => $idKelurahan]);
 
@@ -138,7 +143,6 @@ if ($idKelurahan) {
 <table class="table table-hover table-bordered">
     <thead>
         <tr>
-            <th>No</th>
             <th>RW</th>
             <th>RT</th>
             <th>KK</th>
@@ -147,12 +151,11 @@ if ($idKelurahan) {
     <tbody>
     <?php while($dataDetailKelurahan = $sql->fetch()){ ?>
         <tr>
-            <td><?php echo $count; ?></td>
             <td><?php echo $dataDetailKelurahan['jumlah_rw'];?></td>
             <td><?php echo $dataDetailKelurahan['jumlah_rt'];?></td>
             <td><?php echo $dataDetailKelurahan['jumlah_kk'];?></td>
         </tr>
-    <?php $count++; } ?>
+    <?php } ?>
     </tbody>
 </table>
 <?php
