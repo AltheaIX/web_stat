@@ -114,10 +114,6 @@ $idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
                 </div>
             </div>
             <div class="card-body">
-                <div class="mb-2 text-right  d-print-none">
-                    <button class="btn btn-sm btn-sm btn-primary btn-icon-text" onclick="window.print()"><i class="mdi mdi-printer btn-icon-prepend"></i></button>
-                    <a href="#" class="btn btn-sm btn-sm btn-info btn-icon-text"><i class="mdi mdi-chart-bar btn-icon-prepend"></i> Progres</a>
-                </div>
                 <div class="mb-2 d-none">
                     <button type="button" id="reload" class="d-none  btn btn-sm btn-info-2 btn-icon-text"><i class="mdi mdi-backup-restore btn-icon-prepend"></i> Muat Ulang</button>
                     <a href="#" class="d-none btn btn-sm btn-sm btn-primary btn-icon-text"><i class="mdi mdi-chart-bar btn-icon-prepend"></i> Chart</a>
