@@ -177,18 +177,11 @@ if ($idKecamatan) {
         <h4>Bar Chart</h4>
         <div class="container-fluid">
             <?php
-            include '../../config.php';
-            error_reporting(E_ALL);
 
             $idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
 
             // Query untuk mengambil data dari database berdasarkan id kecamatan
-            $sql = "SELECT m_kelurahan.nama AS kelurahan, data_rekap.j_rw, data_rekap.j_rt, data_rekap.j_a_total_l, data_rekap.j_a_total_p 
-                    FROM data_rekap 
-                    INNER JOIN m_kecamatan ON data_rekap.id_kec = m_kecamatan.id 
-                    INNER JOIN m_kelurahan ON m_kecamatan.id = m_kelurahan.id_kec 
-                    WHERE data_rekap.id_kec = :id_kecamatan
-                    GROUP BY m_kelurahan.id";
+            $sql = "SELECT m_kelurahan.nama AS kelurahan, data_rekap.j_rw, data_rekap.j_rt, data_rekap.j_a_total_l, data_rekap.j_a_total_p FROM data_rekap INNER JOIN m_kelurahan ON data_rekap.id_kel = m_kelurahan.id WHERE data_rekap.id_kec = :id_kecamatan;";
 
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(':id_kecamatan', $idKecamatan, PDO::PARAM_INT);
@@ -246,9 +239,11 @@ if ($idKecamatan) {
                     },
                     options: {
                         scales: {
-                            y: {
-                                beginAtZero: true
-                            }
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
                         },
                         plugins: {
                             legend: {

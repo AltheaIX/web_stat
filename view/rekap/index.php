@@ -202,7 +202,7 @@ $rowa = $stmta->fetch();
             error_reporting(E_ALL);
 
             // Query untuk mengambil data dari database
-            $sql = "SELECT m.nama, d.j_rw, d.j_rt, d.j_a_total_l, d.j_a_total_p FROM m_kecamatan AS m INNER JOIN data_rekap AS d ON m.id = d.id_kec";
+            $sql = "SELECT m_kecamatan.nama AS nama, SUM(data_rekap.j_rw) AS j_rw, SUM(data_rekap.j_rt) AS j_rt, SUM(data_rekap.j_a_total_l) AS j_a_total_l, SUM(data_rekap.j_a_total_p) AS j_a_total_p FROM data_rekap INNER JOIN m_kecamatan ON data_rekap.id_kec = m_kecamatan.id GROUP BY data_rekap.id_kec ORDER BY data_rekap.id_kec ASC";
             $stmt = $conn->prepare($sql);
             $stmt->execute();
 
@@ -258,9 +258,11 @@ $rowa = $stmta->fetch();
                     },
                     options: {
                         scales: {
-                            y: {
-                                beginAtZero: true
-                            }
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
                         },
                         plugins: {
                             legend: {

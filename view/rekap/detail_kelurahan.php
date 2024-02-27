@@ -1,6 +1,6 @@
 <?php
 include '../../config.php';
-// error_reporting(0);
+error_reporting(0);
 
 $sqla = "SELECT * FROM setting ORDER BY id DESC";
 $stmta = $conn->prepare($sqla);
@@ -123,7 +123,7 @@ $idKelurahan = isset($_GET['id_kelurahan']) ? $_GET['id_kelurahan'] : null;
                     $data_kelurahan = $sql->fetch();
                     ?>
                     <h4 class="font-weight-normal text-center">Hasil Pendataan Real Time</h4>
-                    <h4 class="font-weight-normal text-center mb-2"><?php echo $data_kelurahan['nama']; ?> <?php echo $rowa['nama']; ?></h4>
+                    <h4 class="font-weight-normal text-center mb-2"><b><?php echo $data_kelurahan['nama']; ?></b> <?php echo $rowa['nama']; ?></h4>
                 </div>
 
                 <div class="table-responsive">
@@ -233,9 +233,11 @@ if ($idKelurahan) {
                     },
                     options: {
                         scales: {
-                            y: {
-                                beginAtZero: true
-                            }
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
                         },
                         plugins: {
                             legend: {
