@@ -76,7 +76,7 @@ $rowa = $stmta->fetch();
     <nav class="navbar col-lg-12 col-12 p-1 fixed-top d-flex flex-row d-print-none" style="background-color: #E54606;">
         <!-- Brand/logo -->
         <a class="navbar-brand brand-logo mr-0 d-print-none" href="#">
-            <img class="ml-2 d-print-none" src="../../images/logo.png" alt="logo" style="width:170px;">
+            <img class="ml-2 d-print-none" src="../../images/logo.png?p=1" alt="logo" style="width:170px;">
         </a>
 
         <ul class="navbar-nav navbar-nav-right mr-2">
@@ -133,7 +133,7 @@ $idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
 
 // Pastikan ID Kecamatan tidak kosong
 if ($idKecamatan) {
-    $sql = $conn->prepare("SELECT m_kelurahan.id as id_kel, m_kelurahan.nama as nama_kel, data_rekap.j_rw AS jumlah_rw, data_rekap.j_rt AS jumlah_rt, data_rekap.j_dasawisma AS jumlah_dasawisma, data_rekap.j_kk AS jumlah_kk FROM `data_rekap` INNER JOIN m_kelurahan ON data_rekap.id_kel = m_kelurahan.id WHERE data_rekap.id_kec = :id_kec GROUP BY data_rekap.id_kel ORDER BY m_kelurahan.id ASC");
+    $sql = $conn->prepare("SELECT m_kelurahan.id as id_kel, m_kelurahan.nama as nama_kel, data_rekap.j_rw AS jumlah_rw, data_rekap.j_rt AS jumlah_rt, data_rekap.j_kk AS jumlah_kk FROM `data_rekap` INNER JOIN m_kelurahan ON data_rekap.id_kel = m_kelurahan.id WHERE data_rekap.id_kec = :id_kec GROUP BY data_rekap.id_kel ORDER BY m_kelurahan.id ASC");
     $sql->execute([":id_kec" => $idKecamatan]);
 
     // Ambil data dari hasil kueri
@@ -144,7 +144,6 @@ if ($idKecamatan) {
             <th>Kelurahan</th>
             <th>RW</th>
             <th>RT</th>
-            <th>Dasawisma</th>
             <th>KK</th>
         </tr>
     </thead>
@@ -154,7 +153,6 @@ if ($idKecamatan) {
             <td><a href="detail_kelurahan.php?id_kelurahan=<?php echo $dataDetailKelurahan['id_kel']; ?>"><?php echo $dataDetailKelurahan['nama_kel'] ?></a></td>
             <td><?php echo $dataDetailKelurahan['jumlah_rw'];?></td>
             <td><?php echo $dataDetailKelurahan['jumlah_rt'];?></td>
-            <td><?php echo $dataDetailKelurahan['jumlah_dasawisma'];?></td>
             <td><?php echo $dataDetailKelurahan['jumlah_kk'];?></td>
         </tr>
     <?php } ?>

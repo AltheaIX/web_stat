@@ -1,6 +1,6 @@
 <?php
 include '../../config.php';
-error_reporting(0);
+// error_reporting(0);
 
 $sqla = "SELECT * FROM setting ORDER BY id DESC";
 $stmta = $conn->prepare($sqla);
@@ -90,7 +90,7 @@ $rowa = $stmta->fetch();
     <nav class="navbar col-lg-12 col-12 p-1 fixed-top d-flex flex-row d-print-none" style="background-color: #E54606;">
         <!-- Brand/logo -->
         <a class="navbar-brand brand-logo mr-0 d-print-none" href="#">
-            <img class="ml-2 d-print-none" src="../../images/logo.png" alt="logo" style="width:170px;">
+            <img class="ml-2 d-print-none" src="../../images/logo.png?p=1" alt="logo" style="width:170px;">
         </a>
 
         <ul class="navbar-nav navbar-nav-right mr-2">
