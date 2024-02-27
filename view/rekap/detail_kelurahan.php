@@ -170,33 +170,6 @@ if ($idKelurahan) {
             </div>
         </div>
 
-        <div class="d-print-block">
-            <div class="card data-icon-card-primary mb-2 mt-2">
-                <div class="card-body">
-                    <h3 class="card-title text-md-center text-xl-left text-white">Kelompok Dasawisma</h3>
-                    <div class="row">
-                        <div class="col-8 text-white">
-                            <h3>13.332<span>
-                                    <small> Kelompok</small>
-                                </span></h3>
-
-                            <h4 class="text-white font-weight-lighter mb-2">743 <span><small>Laki-Laki</small></span></h4>
-                            <h4 class="text-white font-weight-lighter mb-0">12.589 <span><small>Perempuan</small></span></h4>
-                            <ul>
-                                <hr>
-                                <h4 class="mb-2 mt-3 font-weight-lighter text-black">682.122<span><small> Data Warga</small></span></h4>
-                                <h4 class="mb-2 font-weight-lighter text-black">201.304<span><small> Data Bangunan</small></span></h4>
-                                <h4 class="mb-2 font-weight-lighter text-black">170.990<span><small> Catatan Keluraga</small></span></h4>
-                            </ul>
-                        </div>
-                        <div class="col-4 background-icon">
-                            <i class="mdi mdi-library"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
          <div class="col-md-12 grid-margin stretch-card">
     <div class="card">
         <h4>Bar Chart</h4>
