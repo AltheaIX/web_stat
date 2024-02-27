@@ -1,0 +1,198 @@
+/*\
+|*|
+|*|			:: print.css ::
+|*|
+|*|
+|*|	The universal CSS to carry around in every website to make it adaptable
+|*|	to the printed page
+|*|
+|*|	https://github.com/madmurphy/print.css/
+|*|
+|*|	Version 1.1.2
+|*|
+|*|	(c) madmurphy333@gmail.com
+|*|
+|*|	**print.css!** is free software. You can redistribute it and/or modify
+|*|	it under the terms of the GPL license, version 3 or any later version.
+|*|
+|*|	https://www.gnu.org/licenses/gpl-3.0.html
+|*|
+|*|
+\*/
+
+@media print {
+	.d-print-none {
+		display: none !important;
+	}
+
+	.d-print-inline {
+		display: inline !important;
+	}
+
+	.d-print-inline-block {
+		display: inline-block !important;
+	}
+
+	.d-print-block {
+		display: block !important;
+	}
+
+	.d-print-table {
+		display: table !important;
+	}
+
+	.d-print-table-row {
+		display: table-row !important;
+	}
+
+	.d-print-table-cell {
+		display: table-cell !important;
+	}
+
+	.d-print-flex {
+		display: flex !important;
+	}
+
+	.d-print-inline-flex {
+		display: inline-flex !important;
+	}
+}
+
+
+@media print {
+
+
+	@page {
+		size: a3;
+	}
+
+	/*  A few classes...  */
+	body,
+	.container-fluid,
+	.content-wrapper {
+		// min-width: 992px !important;
+		background-color: #ffffff !important;
+		border-color: #ffffff;
+	}
+
+	nav,
+	.navbar,
+	.navbar-expand-sm,
+	.fixed-top {
+		display: none !important;
+		padding-top: 0px !important;
+		padding-bottom: 0px !important;
+	}
+
+	.print-new-page {
+		page-break-after: always !important;
+	}
+
+	.print-new-line {
+		break-before: always !important;
+	}
+
+	*,
+	*::before,
+	*::after {
+		text-shadow: none !important;
+		box-shadow: none !important;
+	}
+
+	a:not(.btn) {
+		text-decoration: none !important;
+	}
+
+	abbr[title]::after {
+		content: " (" attr(title) ")";
+	}
+
+	pre {
+		white-space: pre-wrap !important;
+	}
+
+	pre,
+	blockquote {
+		border: 1px solid #ffffff;
+		page-break-inside: avoid;
+	}
+
+	thead {
+		display: table-header-group;
+	}
+
+	tr,
+	img {
+		page-break-inside: avoid;
+	}
+
+	p,
+	h2,
+	h3 {
+		orphans: 3;
+		widows: 3;
+	}
+
+	h2,
+	h3 {
+		page-break-after: avoid;
+	}
+
+
+
+
+
+	.d-print-noborder {
+		border-color: #ffffff;
+	}
+
+	.container {
+		min-width: 992px !important;
+	}
+
+
+
+	.badge {
+		border: 1px solid #000;
+	}
+
+	.table,
+	.jsgrid .jsgrid-table {
+		border-collapse: collapse !important;
+	}
+
+	.table td,
+	.jsgrid .jsgrid-table td,
+	.table th,
+	.jsgrid .jsgrid-table th {
+		background-color: #ffffff !important;
+	}
+
+	.table-bordered th,
+	.table-bordered td {
+		border: 1px solid #dee2e6 !important;
+	}
+
+	.table-dark {
+		color: inherit;
+	}
+
+	.table-dark th,
+	.table-dark td,
+	.table-dark thead th,
+	.table-dark tbody+tbody {
+		border-color: #c9ccd7;
+	}
+
+	.table .thead-dark th,
+	.jsgrid .jsgrid-table .thead-dark th {
+		color: inherit;
+		border-color: #c9ccd7;
+	}
+
+	.card {
+		display: flex !important;
+	}
+
+
+}
