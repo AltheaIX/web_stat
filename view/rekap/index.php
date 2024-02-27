@@ -1,6 +1,6 @@
 <?php
 include '../../config.php';
-// error_reporting(0);
+error_reporting(0);
 
 $sqla = "SELECT * FROM setting ORDER BY id DESC";
 $stmta = $conn->prepare($sqla);
@@ -111,14 +111,19 @@ $rowa = $stmta->fetch();
         <div class="main-panel-center">
             <div class="content-wrapper mt-2"><div class="row">
     <div class="col-md-12 col-xl-12 mx-auto animated fadeIn delay-3s d-print-block">
+        <?php
+        $count = 1;
 
+        $sql = $conn->prepare("SELECT id_kec, m_kecamatan.nama AS nama_kec, data_rekap.j_kel AS jumlah_kelurahan, data_rekap.j_rw AS jumlah_rw, data_rekap.j_rt AS jumlah_rt, data_rekap.j_dasawisma AS jumlah_dasawisma, data_rekap.j_kk AS jumlah_kk FROM `data_rekap` INNER JOIN m_kecamatan ON data_rekap.id_kec = m_kecamatan.id GROUP BY id_kec ORDER BY m_kecamatan.id ASC");
+        $sql->execute();
+        ?>
         <div class="card m-b-30 d-print-noborder">
             <div class="card-header">
                 <div class="d-flex align-items-center">
                     <img class="img-sm rounded" src="../../images/160522011148_logo_dasawisma_5.png" alt="profile">
                     <div class="px-2 card-weather">
                         <div class="px-0">Dasawisma <?php echo $rowa['nama']; ?></div>
-                        <div class="px-0 text-muted small">Rekap Kota Bitung <i class="label bg-yellow"> 15 Kecamatan </i></div>
+                        <div class="px-0 text-muted small">Rekap Kota Bitung <i class="label bg-yellow"> <?php echo $sql->rowCount(); ?> Kecamatan </i></div>
                     </div>
                 </div>
             </div>
@@ -142,6 +147,7 @@ $rowa = $stmta->fetch();
     <table class="table table-hover table-bordered">
         <thead>
           <tr>
+            <th>No</th>
             <th>Kecamatan</th>
             <th>Kelurahan</th>
             <th>RW</th>
@@ -154,15 +160,12 @@ $rowa = $stmta->fetch();
         <tbody>
             
             <?php
-                   $count = 1;
-				   
-                   $sql = $conn->prepare("SELECT id_kec, m_kecamatan.nama AS nama_kec, data_rekap.j_kel AS jumlah_kelurahan, data_rekap.j_rw AS jumlah_rw, data_rekap.j_rt AS jumlah_rt, data_rekap.j_dasawisma AS jumlah_dasawisma, data_rekap.j_kk AS jumlah_kk FROM `data_rekap` INNER JOIN m_kecamatan ON data_rekap.id_kec = m_kecamatan.id GROUP BY id_kec ORDER BY m_kecamatan.id ASC");
-                   $sql->execute();
                    while($data=$sql->fetch()) {
                        
                 ?>
                 
           <tr>
+              <td><?php echo $count; ?></td>
             <td><?php echo $data['nama_kec'];?></td>
             <td><?php echo $data['jumlah_kelurahan'];?></td>
             <td><?php echo $data['jumlah_rw'];?></td>

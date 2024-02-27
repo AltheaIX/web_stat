@@ -104,7 +104,7 @@ $rowa = $stmta->fetch();
                     <img class="img-sm rounded" src="../../images/160522011148_logo_dasawisma_5.png" alt="profile">
                     <div class="px-2 card-weather">
                         <div class="px-0">Data <?php echo $rowa['nama']; ?></div>
-                        <div class="px-0 text-muted small">Rekap Kota Bitung <i class="label bg-yellow"> 15 Kecamatan </i></div>
+                        <div class="px-0 text-muted small">Rekap Kota Bitung <!-- <i class="label bg-yellow"> 15 Kecamatan </i> --></div>
                     </div>
                 </div>
             </div>
@@ -133,6 +133,7 @@ $idKelurahan = isset($_GET['id_kelurahan']) ? $_GET['id_kelurahan'] : null;
 
 // Pastikan ID Kecamatan tidak kosong
 if ($idKelurahan) {
+    $count = 1;
     $sql = $conn->prepare("SELECT data_rekap.j_rw AS jumlah_rw, data_rekap.j_rt AS jumlah_rt, data_rekap.j_kk AS jumlah_kk FROM `data_rekap` WHERE data_rekap.id_kel = :id_kel ORDER BY data_rekap.id ASC");
     $sql->execute([":id_kel" => $idKelurahan]);
 
@@ -141,6 +142,7 @@ if ($idKelurahan) {
 <table class="table table-hover table-bordered">
     <thead>
         <tr>
+            <th>No</th>
             <th>RW</th>
             <th>RT</th>
             <th>KK</th>
@@ -149,11 +151,12 @@ if ($idKelurahan) {
     <tbody>
     <?php while($dataDetailKelurahan = $sql->fetch()){ ?>
         <tr>
+            <td><?php echo $count; ?></td>
             <td><?php echo $dataDetailKelurahan['jumlah_rw'];?></td>
             <td><?php echo $dataDetailKelurahan['jumlah_rt'];?></td>
             <td><?php echo $dataDetailKelurahan['jumlah_kk'];?></td>
         </tr>
-    <?php } ?>
+    <?php $count++; } ?>
     </tbody>
 </table>
 <?php

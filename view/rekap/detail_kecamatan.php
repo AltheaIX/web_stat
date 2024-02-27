@@ -7,6 +7,8 @@ $stmta = $conn->prepare($sqla);
 $stmta->execute();
 $rowa = $stmta->fetch();
 
+$idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
+
 ?>
 
 <!DOCTYPE html>
@@ -97,14 +99,17 @@ $rowa = $stmta->fetch();
         <div class="main-panel-center">
             <div class="content-wrapper mt-2"><div class="row">
     <div class="col-md-12 col-xl-12 mx-auto animated fadeIn delay-3s d-print-block">
-
+        <?php
+        $sql = $conn->prepare("SELECT m_kelurahan.id as id_kel, m_kelurahan.nama as nama_kel, data_rekap.j_rw AS jumlah_rw, data_rekap.j_rt AS jumlah_rt, data_rekap.j_kk AS jumlah_kk FROM `data_rekap` INNER JOIN m_kelurahan ON data_rekap.id_kel = m_kelurahan.id WHERE data_rekap.id_kec = :id_kec GROUP BY data_rekap.id_kel ORDER BY m_kelurahan.id ASC");
+        $sql->execute([":id_kec" => $idKecamatan]);
+        ?>
         <div class="card m-b-30 d-print-noborder">
             <div class="card-header">
                 <div class="d-flex align-items-center">
                     <img class="img-sm rounded" src="../../images/160522011148_logo_dasawisma_5.png" alt="profile">
                     <div class="px-2 card-weather">
                         <div class="px-0">Data <?php echo $rowa['nama']; ?></div>
-                        <div class="px-0 text-muted small">Rekap Kota Bitung <i class="label bg-yellow"> 15 Kecamatan </i></div>
+                        <div class="px-0 text-muted small">Rekap Kota Bitung <i class="label bg-yellow"> <?php echo $sql->rowCount(); ?> Kelurahan </i></div>
                     </div>
                 </div>
             </div>
@@ -126,13 +131,10 @@ $rowa = $stmta->fetch();
 
                 <div class="table-responsive">
    <?php
-include '../../config.php';
-error_reporting(0);
-
-$idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
 
 // Pastikan ID Kecamatan tidak kosong
 if ($idKecamatan) {
+    $count = 1;
     $sql = $conn->prepare("SELECT m_kelurahan.id as id_kel, m_kelurahan.nama as nama_kel, data_rekap.j_rw AS jumlah_rw, data_rekap.j_rt AS jumlah_rt, data_rekap.j_kk AS jumlah_kk FROM `data_rekap` INNER JOIN m_kelurahan ON data_rekap.id_kel = m_kelurahan.id WHERE data_rekap.id_kec = :id_kec GROUP BY data_rekap.id_kel ORDER BY m_kelurahan.id ASC");
     $sql->execute([":id_kec" => $idKecamatan]);
 
@@ -141,6 +143,7 @@ if ($idKecamatan) {
 <table class="table table-hover table-bordered">
     <thead>
         <tr>
+            <th>No</th>
             <th>Kelurahan</th>
             <th>RW</th>
             <th>RT</th>
@@ -151,14 +154,15 @@ if ($idKecamatan) {
     <tbody>
     <?php while($dataDetailKelurahan = $sql->fetch()){ ?>
         <tr>
-            <td><?php echo $dataDetailKelurahan['nama_kel'] ?></td>
+            <td><?php echo $count; ?></td>
+            <td><?php echo $dataDetailKelurahan['nama_kel']; ?></td>
             <td><?php echo $dataDetailKelurahan['jumlah_rw'];?></td>
             <td><?php echo $dataDetailKelurahan['jumlah_rt'];?></td>
             <td><?php echo $dataDetailKelurahan['jumlah_kk'];?></td>
             <td><div class="btn btn-primary" onclick='window.location.href = "detail_kelurahan.php?id_kelurahan=<?php echo $dataDetailKelurahan['id_kel'];  ?>"'> <i class="fa-solid fa-book"></i> Rekap Kecamatan
                 </div></td>
         </tr>
-    <?php } ?>
+    <?php $count++; } ?>
     </tbody>
 </table>
 <?php
