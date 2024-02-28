@@ -97,7 +97,7 @@ $rowa = $stmta->fetch();
             <li class="nav-item nav-profile">
                 
                     
-                        <a class="btn btn-outline-primary btn-icon-text" href="#">
+                        <a class="btn btn-outline-primary btn-icon-text" href="/login">
                             <i class="mdi mdi-login text-warning"></i>
                             Login
                         </a>
@@ -120,7 +120,7 @@ $rowa = $stmta->fetch();
         <div class="card m-b-30 d-print-noborder">
             <div class="card-header">
                 <div class="d-flex align-items-center">
-                    <img class="img-sm rounded" src="../../images/160522011148_logo_dasawisma_5.png" alt="profile">
+                    <img class="img-sm rounded" src="../../images/data-logo.png?p=1" alt="profile">
                     <div class="px-2 card-weather">
                         <div class="px-0">Data Sim <?php echo $rowa['nama']; ?></div>
                         <div class="px-0 text-muted small">Rekap Kota Bitung <i class="label bg-yellow"> <?php echo $sql->rowCount(); ?> Kecamatan </i></div>

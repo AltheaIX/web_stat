@@ -77,7 +77,7 @@ $idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
 <body>
     <nav class="navbar col-lg-12 col-12 p-1 fixed-top d-flex flex-row d-print-none" style="background-color: #E54606;">
         <!-- Brand/logo -->
-        <a class="navbar-brand brand-logo mr-0 d-print-none" href="#">
+        <a class="navbar-brand brand-logo mr-0 d-print-none" href="./">
             <img class="ml-2 d-print-none" src="../../images/logo.png?p=1" alt="logo" style="width:170px;">
         </a>
 
@@ -85,7 +85,7 @@ $idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
             <li class="nav-item nav-profile">
                 
                     
-                        <a class="btn btn-outline-primary btn-icon-text" href="#">
+                        <a class="btn btn-outline-primary btn-icon-text" href="/login">
                             <i class="mdi mdi-login text-warning"></i>
                             Login
                         </a>
@@ -106,7 +106,7 @@ $idKecamatan = isset($_GET['id_kecamatan']) ? $_GET['id_kecamatan'] : null;
         <div class="card m-b-30 d-print-noborder">
             <div class="card-header">
                 <div class="d-flex align-items-center">
-                    <img class="img-sm rounded" src="../../images/160522011148_logo_dasawisma_5.png" alt="profile">
+                    <img class="img-sm rounded" src="../../images/data-logo.png?p=1" alt="profile">
                     <div class="px-2 card-weather">
                         <div class="px-0">Data <?php echo $rowa['nama']; ?></div>
                         <div class="px-0 text-muted small">Rekap Kota Bitung <i class="label bg-yellow"> <?php echo $sql->rowCount(); ?> Kelurahan </i></div>
