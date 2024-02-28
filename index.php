@@ -207,15 +207,17 @@
             <h1 class="heading">&nbsp;</h1>
             <h1 class="heading">&nbsp;</h1>
 
+            <div class="card text-white" style="background-color: rgba(70, 70, 70, 0.5);">
             <h4 class="heading d-none d-sm-block noblur">DASAWISMA</h4>
             <h5 class="cover d-none d-sm-block noblur">TP-PKK Kota Bitung</h5>
             <h5 class="heading">&nbsp;</h5>
             <p class="lead ">DASAWISMA adalah sistem informasi yang membantu dalam pendataan dan pengelolaan DASAWISMA di kota Bitung.</p>
 
             <p class="lead">
-                <a href="view/admin/" id="share" class="btn btn-md btn-warning">Masuk Aplikasi</a>
+                <a href="view/admin/" id="share" class="btn btn-md btn-warning text-white">Masuk Aplikasi</a>
                 <a href="view/rekap/" id="share" class="btn btn-md btn-primary">Lihat Rekap</a>
             </p>
+            </div>
 
         </main>
 
